@@ -1,38 +1,33 @@
+body {
+  background-color: rgb(99, 99, 99);
+  color: rgb(243, 237, 237);
+}
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navLink {
+  color: rgb(243, 237, 237);
+  margin: 0 5px;
+  text-decoration: none;
+  margin-left: 25px;
+}
+.navLink:hover,
+.navLink:focus {
+  text-decoration: underline;
+  color: rgb(78, 193, 255);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.PostCart {
+  border: 1px black solid;
+  width: fit-content;
+  padding: 5px;
+  border-radius: 15px;
+  background-color: white;
+  color: black;
+  text-align: left;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.interactionPostBtn {
+  cursor: pointer;
 }
