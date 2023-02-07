@@ -3,4 +3,6 @@ export const routes = {
   explore: '/explore',
   profil: '/profil',
   addPost: '/addPost',
+  logIn: "/logIn",
+  signUp: "/signUp"
 };
