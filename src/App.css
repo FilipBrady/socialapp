@@ -12,6 +12,7 @@ body {
   margin: 0 5px;
   text-decoration: none;
   margin-left: 25px;
+  justify-self: center;
 }
 
 .navLink:hover,
@@ -52,6 +53,7 @@ body {
 
 .interactionPostBtn {
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .heartBox {
@@ -90,6 +92,10 @@ body {
 .ProfilePageContainer {
   max-width: 1080px;
   margin: auto;
+  background-color: white;
+  padding: 15px 5px;
+  color: black;
+  /* height: 100%; */
 }
 
 .ProfilePageUserInfo {
@@ -102,4 +108,161 @@ body {
 .ProfilePageUserPic {
   max-width: 100px;
   border-radius: 100%;
+}
+
+.ProfileFeedContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  background-color: white;
+  padding: 5px;
+}
+
+.ProfileFeedBox {
+  position: relative;
+}
+
+.ProfileFeedImage {
+  max-width: 300px;
+  margin: 2px 3px;
+  cursor: pointer;
+}
+
+.ProfilImageHoverInfoBox {
+  color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.518);
+  height: 100%;
+  width: 100%;
+}
+
+.DisplayNone {
+  display: none;
+}
+
+.ProfileOpenImageWindow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  max-width: 900px;
+  width: 900px;
+  height: 500px;
+  border: 5px solid black;
+  z-index: 1000 ;
+}
+
+.ProfileOpenImageContainer {
+  display: grid;
+  grid-template-columns: repeat(8, 12.5%);
+  grid-template-rows: repeat(8, 12.5%);
+  height: 100%;
+  width: 100%;
+}
+
+.ProfileOpenImageBox {
+  /* display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline; */
+  /* display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, 25%); */
+}
+
+
+.ProfileOpenImage {
+  max-width: 400px;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  /* display: inline-block; */
+  grid-row-start: 3;
+  /* grid-row-end: 5; */
+  /* align-self: center; */
+  justify-self: center;
+}
+
+.ProfilImageDescTimeBox {
+  grid-column-start: 5;
+  grid-column-end: 8;
+  align-items: start;
+  grid-row-start: 6;
+  justify-self: left;
+  align-self: end;
+}
+
+.interactionPostBtnProfileBox {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  grid-column-start: 5;
+  grid-column-end: 8;
+  grid-row-start: 7;
+  align-self: flex-end;
+}
+
+
+.ProfilImageCommentSection {
+  grid-column-start: 5;
+  grid-row-start: 1;
+  grid-column-end: 8;
+  display: inherit;
+  text-align: left;
+}
+
+.ProfileImageAddComment {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0;
+  grid-column-start: 5;
+  grid-column-end: 8;
+  grid-row-start: 8;
+  align-self: flex-end;
+}
+
+.ProfileImageAddComment>input[type=text] {
+  border: 1px solid black;
+  font-size: 18px;
+  padding: 3px 5px;
+}
+
+.ProfilOpenImageCloseIcon {
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(-100%);
+  cursor: pointer;
+}
+
+.LogInForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2vmin;
+}
+
+.LogInForm input {
+  height: 25px;
+  font-size: 20px;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 3px 10px;
+}
+
+.LogInForm input[type=submit] {
+  font-size: 18px;
+  width: fit-content;
+  margin: auto;
 }

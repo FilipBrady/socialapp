@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 const Navigation = () => {
   return (
     <nav>
-      <Box sx={{ padding: 2, display: 'flex', justifyContent: 'space-around' }}>
+      <Box sx={{ padding: 2, display: 'flex', justifyContent: 'space-around', alignItems: "center" }}>
         <Box>
           <Link to={routes.home} className='navLink'>
             <HomeIcon fontSize='large' />
@@ -21,10 +21,11 @@ const Navigation = () => {
             <AddCircleOutlineIcon fontSize='large' />
           </Link>
         </Box>
-        <Box>
+        <Box sx={{display: "flex", alignItems: "center"}}>
           <Link to={routes.profil} className='navLink'>
             <AccountCircleIcon fontSize='large' />
           </Link>
+          <Link to={routes.logIn} className='navLink'>Log In</Link>
         </Box>
       </Box>
     </nav>

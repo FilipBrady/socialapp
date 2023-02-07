@@ -1,14 +1,20 @@
 import { Box, Typography } from '@mui/material';
 import PostContainer from '../components/PostContainer';
 import { UserList } from '../data/UsersList';
+import { useState } from 'react';
+import ProfileFeedImage from '../components/ProfileFeedImage';
+import ProfileOpenImage from '../components/ProfileOpenImage';
+import { useParams } from 'react-router-dom';
 
 const ProfilPage = () => {
+  // const [isPostClicked, setIsPostClicked] = useState(false);
+  const { id } = useParams();
   return (
     <div className='ProfilePageContainer'>
       {UserList.map(UserData => {
-        if (UserData.userId === 2) {
+        if (UserData.userName === id) {
           return (
-            <Box>
+            <Box key={UserData.userId}>
               <div className='ProfilePageUserInfo'>
                 <Box sx={{ display: 'flex' }}>
                   <img
@@ -54,13 +60,23 @@ const ProfilPage = () => {
                   </Box>
                 </Box>
               </div>
-              <div className='ProfileFeedBox'>
-                {UserList.map(UserData => (
-                  <>
-                    {UserData.userProfile.profilFeed.map(UserFeed => (
-                      <PostContainer UserData={UserData} UserFeed={UserFeed} />
-                    ))}
-                  </>
+              <div className='ProfileFeedContainer'>
+                {UserData.userProfile.profilFeed.map(UserFeed => (
+                  <Box>
+                    <Box >
+                      <ProfileFeedImage
+                        UserFeed={UserFeed}
+                        key={UserFeed.postId}
+                      />
+                    </Box>
+                    {/* <Box className={isPostClicked ? '' : 'DisplayNone'}>
+                      <ProfileOpenImage
+                        // UserData={UserData}
+                        UserFeed={UserFeed}
+                        setIsPostClicked={setIsPostClicked}
+                      />
+                    </Box> */}
+                  </Box>
                 ))}
               </div>
             </Box>

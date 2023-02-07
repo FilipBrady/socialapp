@@ -14,13 +14,7 @@ import PostContainer from '../components/PostContainer';
 const ExploreSite = () => {
   return (
     <div>
-      {UserList.map(UserData => (
-        <>
-          {UserData.userProfile.profilFeed.map(UserFeed => (
-            <PostContainer UserData={UserData} UserFeed={UserFeed} />
-          ))}
-        </>
-      ))}
+      <PostContainer />
     </div>
   );
 };
