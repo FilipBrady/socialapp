@@ -21,8 +21,14 @@ const SignUpPage = () => {
           <input type='password' placeholder='Password' />
           <input type='password' placeholder='Repete your password' />
           <input type='email' placeholder='Email' />
-          <input type='submit' />
+          <input type='submit'  />
         </form>
+        <Typography variant='body2' color='black' sx={{marginTop: 2}}>
+          You already have a profile? Just {'  '}
+          <Link to={routes.logIn} className='LogInSignUpLink'>
+          Log in!
+          </Link> 
+        </Typography>
       </Box>
     </div>
   );

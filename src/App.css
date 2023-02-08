@@ -266,3 +266,6 @@ body {
   width: fit-content;
   margin: auto;
 }
+.LogInSignUpLink {
+  color: inherit;
+}

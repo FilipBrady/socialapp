@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import LogInPage from '../pages/LogInPage';
 import ProfilPage from '../pages/ProfilPage';
 import SignUpPage from '../pages/SignUpPage';
+import MyProfilPage from './MyProfilPage';
 import ProfileOpenImage from './ProfileOpenImage';
 
 const RouterComponent = () => {
@@ -16,6 +17,7 @@ const RouterComponent = () => {
       <Route path={routes.explore} element={<ExploreSite />} />
       <Route path={routes.profil} element={<ProfilPage />} />
       <Route path={`${routes.profil}/:id`} element={<ProfilPage />} />
+      <Route path={routes.myProfil} element={<MyProfilPage />} />
       <Route path={routes.addPost} element={<AddPostPage />} />
       <Route path={routes.logIn} element={<LogInPage />} />
       <Route path={routes.signUp} element={<SignUpPage />} />

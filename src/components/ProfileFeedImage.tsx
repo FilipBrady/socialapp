@@ -29,11 +29,12 @@ const ProfileFeedImage = ({ UserFeed }: Props) => {
   const [isPostClicked, setIsPostClicked] = useState(false);
   console.log(isPostClicked);
   return (
-    <div onClick={() => setIsPostClicked(true)}>
+    <div>
       <div
         className='ProfileFeedBox'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={() => setIsPostClicked(true)}
       >
         <img
           key={UserFeed.postId}
@@ -77,7 +78,6 @@ const ProfileFeedImage = ({ UserFeed }: Props) => {
           </Box>
         </div>
       </div>
-
       <div className={isPostClicked ? '' : 'DisplayNone'}>
         <ProfileOpenImage
           // UserData={UserData}

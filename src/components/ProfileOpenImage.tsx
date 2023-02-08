@@ -48,6 +48,12 @@ const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
         if (UserData.userId === 2) {
           return ( */}
       <div className='ProfileOpenImageContainer'>
+        <div
+          className='ProfilOpenImageCloseIcon'
+          onClick={() => setIsPostClicked(false)}
+        >
+          X
+        </div>
         <img
           onDoubleClick={() => {
             setIsLiked(true);
@@ -57,12 +63,6 @@ const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
           alt={UserFeed.postDescription}
           className='ProfileOpenImage'
         />
-        <div
-          className='ProfilOpenImageCloseIcon'
-          onClick={() => setIsPostClicked(false)}
-        >
-          X
-        </div>
 
         <div className={isLikedAnimation ? 'heartBox' : 'heartBoxHidden'}>
           <FavoriteIcon className='heart' sx={{ fontSize: '80px' }} />

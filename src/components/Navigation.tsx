@@ -22,7 +22,7 @@ const Navigation = () => {
           </Link>
         </Box>
         <Box sx={{display: "flex", alignItems: "center"}}>
-          <Link to={routes.profil} className='navLink'>
+          <Link to={routes.myProfil} className='navLink'>
             <AccountCircleIcon fontSize='large' />
           </Link>
           <Link to={routes.logIn} className='navLink'>Log In</Link>
