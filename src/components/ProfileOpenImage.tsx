@@ -1,4 +1,4 @@
-import { UserList } from '../data/UsersList';
+// import { UserList } from '../data/UsersList';
 import { Box, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -7,32 +7,33 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import { useEffect, useState } from 'react';
+import { DocumentData, Timestamp } from 'firebase/firestore';
 
 type Props = {
   setIsPostClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  UserFeed: {
-    postId: string;
-    postImage: string;
-    postDescription: string;
-    postDate: string;
-    postLikes: {
-      userId: number;
-      userName: string;
-    }[];
-    postComments: {
-      userId: number;
-      commentId: string;
-      userName: string;
-      userComment: string;
-    }[];
-  };
+  // UserFeed: {
+  //   postId: string;
+  //   postImage: string;
+  //   postDescription: string;
+  //   postDate: string;
+  //   postLikes: {
+  //     userId: number;
+  //     userName: string;
+  //   }[];
+  //   postComments: {
+  //     userId: number;
+  //     commentId: string;
+  //     userName: string;
+  //     userComment: string;
+  //   }[];
+  // };
+  postData: DocumentData;
 };
 
-const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
+const ProfileOpenImage = ({ setIsPostClicked, postData }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isLikedAnimation, setIsLikedAnimation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  // const imageURL = 'https://picsum.photos/300/400';
 
   useEffect(() => {
     const changeHeatrVisibility = setInterval(() => {
@@ -59,8 +60,8 @@ const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
             setIsLiked(true);
             setIsLikedAnimation(true);
           }}
-          src={UserFeed.postImage}
-          alt={UserFeed.postDescription}
+          src={postData.postImage}
+          alt={postData.postDescription}
           className='ProfileOpenImage'
         />
 
@@ -68,16 +69,10 @@ const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
           <FavoriteIcon className='heart' sx={{ fontSize: '80px' }} />
         </div>
         <div className='ProfilImageCommentSection'>
-          {UserFeed.postComments.map(comment => (
-            <Box key={comment.commentId}>
-              <Typography variant='h6'>{comment.userName}</Typography>
-              <Typography>{comment.userComment}</Typography>
-            </Box>
-          ))}
+          NONE
         </div>
         <div className='ProfilImageDescTimeBox'>
-          <Typography>{UserFeed.postDescription}</Typography>
-          <Typography>{UserFeed.postDate}</Typography>
+          <Typography variant='body1'>{postData.postDescription}</Typography>
         </div>
         <div className='interactionPostBtnProfileBox'>
           <Box
@@ -119,9 +114,6 @@ const ProfileOpenImage = ({ setIsPostClicked, UserFeed }: Props) => {
           <input type='submit' />
         </div>
       </div>
-      {/* );
-        }
-      })} */}
     </div>
   );
 };

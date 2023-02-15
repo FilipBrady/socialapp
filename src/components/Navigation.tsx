@@ -5,11 +5,20 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box } from '@mui/material';
+import { useAppContainer } from './Context';
 
 const Navigation = () => {
+  const { auth } = useAppContainer();
   return (
     <nav>
-      <Box sx={{ padding: 2, display: 'flex', justifyContent: 'space-around', alignItems: "center" }}>
+      <Box
+        sx={{
+          padding: 2,
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        }}
+      >
         <Box>
           <Link to={routes.home} className='navLink'>
             <HomeIcon fontSize='large' />
@@ -21,12 +30,17 @@ const Navigation = () => {
             <AddCircleOutlineIcon fontSize='large' />
           </Link>
         </Box>
-        <Box sx={{display: "flex", alignItems: "center"}}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Link to={routes.myProfil} className='navLink'>
             <AccountCircleIcon fontSize='large' />
           </Link>
-          <Link to={routes.logIn} className='navLink'>Log In</Link>
+          <Link to={routes.logIn} className='navLink'>
+            Log In
+          </Link>
         </Box>
+        {auth.currentUser && (
+          <button onClick={() => auth.signOut()}>Sign Out</button>
+        )}
       </Box>
     </nav>
   );
