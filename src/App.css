@@ -126,6 +126,7 @@ body {
 
 .ProfileFeedImage {
   max-width: 300px;
+  width: 300px;
   margin: 2px 3px;
   cursor: pointer;
 }
