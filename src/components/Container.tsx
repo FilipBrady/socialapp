@@ -1,7 +1,9 @@
 import { Provider } from './Context';
 import { initializeApp } from 'firebase/app';
 import {
+  addDoc,
   collection,
+  collectionGroup,
   doc,
   DocumentData,
   Firestore,
@@ -9,6 +11,7 @@ import {
   getFirestore,
   orderBy,
   query,
+  serverTimestamp,
   setDoc,
   where,
 } from 'firebase/firestore';
@@ -21,6 +24,7 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth';
+import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -28,6 +32,7 @@ export type AppState = {
   db: Firestore;
   auth: Auth;
   user: User | null | undefined;
+  storage: FirebaseStorage;
   userInfo: DocumentData[] | undefined;
   userPostData: DocumentData[] | undefined;
   signInWithGoogle: () => void;
@@ -37,6 +42,7 @@ export type AppState = {
     email: string,
     password: string
   ) => void;
+  addPost: (useruid: string, postDesc: string) => void;
 };
 
 type Props = {
@@ -49,13 +55,14 @@ const Container = ({ children }: Props) => {
     databaseURL:
       'https://realtimedb-b0b6f-default-rtdb.europe-west1.firebasedatabase.app',
     projectId: 'realtimedb-b0b6f',
-    storageBucket: 'realtimedb-b0b6f.appspot.com',
+    storageBucket: 'gs://realtimedb-b0b6f.appspot.com/',
     messagingSenderId: '1034556421196',
     appId: '1:1034556421196:web:4750e42280a4c6c90070e9',
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
+  const storage = getStorage(app);
 
   const [user] = useAuthState(auth);
 
@@ -119,15 +126,29 @@ const Container = ({ children }: Props) => {
     }
   };
 
+  const addPost = async (useruid: string, postDesc: string) => {
+    const newDocRef = await addDoc(collection(db, 'userPosts'), {
+      postDescription: postDesc,
+      useruid: useruid,
+      createdAt: serverTimestamp(),
+      postLikes: 0,
+      postComments: 0
+    });
+    const postId = newDocRef.id;
+    await setDoc(newDocRef, { postId }, { merge: true })
+  };
+
   const appState: AppState = {
     db: db,
     auth: auth,
     user: user,
+    storage: storage,
     userInfo: userInfo,
     userPostData: userPostData,
     signInWithGoogle: signInWithGoogle,
     logInWithEmailAndPassword: logInWithEmailAndPassword,
     registerWithEmailAndPassword: registerWithEmailAndPassword,
+    addPost: addPost,
   };
 
   return <Provider value={appState}>{children(appState)}</Provider>;
