@@ -5,18 +5,20 @@ import { useState } from 'react';
 import ProfileFeedImage from '../components/ProfileFeedImage';
 import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
-import { useAppContainer } from './Context';
+import { useAppContainer } from '../components/Context';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 const MyProfilPage = () => {
-  const { auth, userInfo, userPostData } = useAppContainer();
+  const { auth, userInfo, userPostData, storage } = useAppContainer();
   console.log(auth.currentUser?.email);
 
-  // const [isPostClicked, setIsPostClicked] = useState(false);
+
   const { id } = useParams();
   return (
     <div className='ProfilePageContainer'>
       {auth.currentUser ? (
-        userInfo && userInfo.map(UserData => {
+        userInfo &&
+        userInfo.map(UserData => {
           if (UserData.name === auth.currentUser?.displayName) {
             return (
               <Box key={UserData.userId}>
@@ -71,8 +73,8 @@ const MyProfilPage = () => {
                   {userPostData?.map(postDatas => {
                     if (postDatas.useruid === UserData.uid) {
                       console.log(postDatas);
-                      console.log(typeof(postDatas));
-                      
+                      console.log(typeof postDatas);
+
                       return (
                         <Box>
                           <Box>

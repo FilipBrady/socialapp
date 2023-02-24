@@ -6,10 +6,11 @@ import ProfileFeedImage from '../components/ProfileFeedImage';
 import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
 import { useAppContainer } from '../components/Context';
+import { ref } from 'firebase/storage';
 
 const ProfilPage = () => {
   const { auth, userPostData, userInfo } = useAppContainer();
-  // const [isPostClicked, setIsPostClicked] = useState(false);
+  
   const { id } = useParams();
   return (
     <div className='ProfilePageContainer'>

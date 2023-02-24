@@ -1,48 +1,72 @@
 import { Box, Typography } from '@mui/material';
+import { DocumentData } from 'firebase/firestore';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from '../data/routes';
 import { UserList } from '../data/UsersList';
+import { useAppContainer } from './Context';
 import PostCard from './PostCart';
 
-const PostContainer = () => {
+type Props = {
+  postData: DocumentData;
+};
+
+const PostContainer = ({ postData }: Props) => {
+  const { auth, userInfo, storage } = useAppContainer();
   return (
     <Box className='PostContainer'>
-      {UserList.map(UserData => (
-        <>
-          {UserData.userProfile.profilFeed.map(UserFeed => (
-            <div className='PostCart'>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginY: 1,
-                  marginLeft: 1,
-                }}
-              >
-                <img
-                  src={UserData.userProfilePic}
-                  alt={UserData.userName}
-                  className='UserProfilePicPost'
-                />
-                <Typography
-                  variant='body1'
-                  sx={{
-                    fontWeight: '600',
-                    padding: 0.5,
-                    paddingX: 0,
-                    marginX: 1,
-                  }}
-                >
-                  <Link to={`${routes.profil}/${UserData.userName}`}>
-                  {UserData.userName}
-                  </Link>
-                </Typography>
-              </Box>
-              <PostCard UserFeed={UserFeed} key={UserData.userId} />
-            </div>
-          ))}
-        </>
-      ))}
+      {userInfo &&
+        userInfo.map(UserData => {
+          if (auth.currentUser?.uid !== UserData.uid) {
+            if (postData.useruid === UserData.uid) {
+              return (
+                <>
+                  {/* {UserData.userProfile.profilFeed.map(UserFeed => ( */}
+                  <div className='PostCart'>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginY: 1,
+                        marginLeft: 1,
+                      }}
+                    >
+                      <img
+                        src={UserData.photoURL}
+                        alt={UserData.name}
+                        className='UserProfilePicPost'
+                      />
+                      <Typography
+                        variant='body1'
+                        sx={{
+                          fontWeight: '600',
+                          padding: 0.5,
+                          paddingX: 0,
+                          marginX: 1,
+                        }}
+                      >
+                        <Link to={`${routes.profil}/${UserData.userName}`}>
+                          {UserData.name}
+                        </Link>
+                      </Typography>
+                    </Box>
+                    {UserData.uid === postData.useruid ? (
+                      <PostCard
+                        // imageSrcUrl={imageSrcUrl}
+                        UserData={UserData}
+                        key={UserData.userId}
+                        postData={postData}
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </>
+              );
+            }
+          }
+        })}
     </Box>
   );
 };
