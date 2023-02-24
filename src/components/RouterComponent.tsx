@@ -5,9 +5,9 @@ import AddPostPage from '../pages/AddPostPage';
 import ExploreSite from '../pages/ExploreSite';
 import Home from '../pages/Home';
 import LogInPage from '../pages/LogInPage';
+import MyProfilPage from '../pages/MyProfilPage';
 import ProfilPage from '../pages/ProfilPage';
 import SignUpPage from '../pages/SignUpPage';
-import MyProfilPage from './MyProfilPage';
 import ProfileOpenImage from './ProfileOpenImage';
 
 const RouterComponent = () => {

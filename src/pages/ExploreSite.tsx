@@ -10,11 +10,15 @@ import ShareIcon from '@mui/icons-material/Share';
 import { useEffect, useState } from 'react';
 import PostImage from '../Images/office.jpg';
 import PostContainer from '../components/PostContainer';
+import { useAppContainer } from '../components/Context';
 
 const ExploreSite = () => {
+  const { auth, userInfo, userPostData, storage } = useAppContainer();
   return (
     <div>
-      <PostContainer />
+      {userPostData && userPostData.map(postData => (
+        <PostContainer postData={postData} />
+      ))}
     </div>
   );
 };

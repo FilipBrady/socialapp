@@ -28,9 +28,14 @@ type Props = {
   //   }[];
   // };
   postData: DocumentData;
+  imageSrcUrl: string;
 };
 
-const ProfileOpenImage = ({ setIsPostClicked, postData }: Props) => {
+const ProfileOpenImage = ({
+  setIsPostClicked,
+  postData,
+  imageSrcUrl,
+}: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isLikedAnimation, setIsLikedAnimation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -55,22 +60,32 @@ const ProfileOpenImage = ({ setIsPostClicked, postData }: Props) => {
         >
           X
         </div>
-        <img
-          onDoubleClick={() => {
-            setIsLiked(true);
-            setIsLikedAnimation(true);
+        <div
+          style={{
+            maxWidth: '400px',
+            gridColumnStart: 1,
+            gridColumnEnd: 5,
+            gridRowStart: 3,
+            justifySelf: 'center',
+            
           }}
-          src={postData.postImage}
-          alt={postData.postDescription}
-          className='ProfileOpenImage'
-        />
-
-        <div className={isLikedAnimation ? 'heartBox' : 'heartBoxHidden'}>
-          <FavoriteIcon className='heart' sx={{ fontSize: '80px' }} />
+        >
+          <div style={{position: "relative"}}>
+            <div className={isLikedAnimation ? 'heartBox' : 'heartBoxHidden'}>
+              <FavoriteIcon className='heart' sx={{ fontSize: '80px' }} />
+            </div>
+            <img
+              onDoubleClick={() => {
+                setIsLiked(true);
+                setIsLikedAnimation(true);
+              }}
+              src={imageSrcUrl}
+              alt={postData.postDescription}
+              className='ProfileOpenImage'
+            />
+          </div>
         </div>
-        <div className='ProfilImageCommentSection'>
-          NONE
-        </div>
+        <div className='ProfilImageCommentSection'>NONE</div>
         <div className='ProfilImageDescTimeBox'>
           <Typography variant='body1'>{postData.postDescription}</Typography>
         </div>

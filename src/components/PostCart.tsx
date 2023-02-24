@@ -7,21 +7,37 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import { useEffect, useState } from 'react';
 import PostImage from '../Images/office.jpg';
+import { DocumentData } from 'firebase/firestore';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { userInfo } from 'os';
+import { useAppContainer } from './Context';
 
 type Props = {
-  UserFeed: {
-    postId: string;
-    postImage: string;
-    postDescription: string;
-    postDate: string;
-  };
+  UserData: DocumentData;
+  // imageSrcUrl: string;
+  postData: DocumentData;
+
 };
 
-const PostCard = ({ UserFeed }: Props) => {
+const PostCard = ({  UserData, postData }: Props) => {
+  const { auth, userInfo, storage } = useAppContainer();
+
   const [isLiked, setIsLiked] = useState(false);
   const [isLikedAnimation, setIsLikedAnimation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const imageURL = 'https://picsum.photos/300/400';
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
+
+  const pathReference = ref(storage, `${postData.useruid}/${postData.postId}`);
+
+  getDownloadURL(pathReference).then(url => {
+    // // Or inserted into an <img> element
+    // const img = document.getElementById('myimg');
+    // if (img !== null) {
+    //   img.setAttribute('src', url);
+    // }
+    setImageSrcUrl(url);
+  });
 
   useEffect(() => {
     const changeHeatrVisibility = setInterval(() => {
@@ -41,14 +57,14 @@ const PostCard = ({ UserFeed }: Props) => {
       <div className={isLikedAnimation ? 'heartBox' : 'heartBoxHidden'}>
         <FavoriteIcon className='heart' sx={{ fontSize: '80px' }} />
       </div>
-      <Box key={UserFeed.postId}>
+      <Box key={UserData.postId}>
         <img
-          src={UserFeed.postImage}
-          alt={UserFeed.postDescription}
+          src={imageSrcUrl}
+          alt={UserData.postDescription}
           style={{ width: '450px' }}
         />
-        <Typography variant='body1'>{UserFeed.postDescription}</Typography>
-        <Typography variant='body2'>{UserFeed.postDate}</Typography>
+        <Typography variant='body1'>{UserData.postDescription}</Typography>
+        <Typography variant='body2'>{UserData.postDate}</Typography>
       </Box>
       <Box
         sx={{
