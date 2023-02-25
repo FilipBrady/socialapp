@@ -7,6 +7,7 @@ import { collection, DocumentData, orderBy, query } from 'firebase/firestore';
 import { useAppContainer } from './Context';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
+import { useParams } from 'react-router-dom';
 
 type Props = {
   // UserFeed: {
@@ -26,30 +27,28 @@ type Props = {
   //   }[];
   // };
   postData: DocumentData;
+  UserData: DocumentData;
 };
 
-const ProfileFeedImage = ({ postData }: Props) => {
-  const { db, userPostData, storage, auth } = useAppContainer();
+const UserProfileFeedImage = ({ postData, UserData }: Props) => {
+  const { db, userPostData, storage, auth, userInfo } = useAppContainer();
   const [isHovered, setIsHovered] = useState(false);
   const [isPostClicked, setIsPostClicked] = useState(false);
-  const [imageSrcUrl, setImageSrcUrl] = useState("")
-  const pathReference = ref(
-    storage,
-    `${auth.currentUser?.uid}/${postData.postId}`
-  );
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
+  const [userProfileUid, setUserProfileUid] = useState('');
+  const { id } = useParams();
+  // console.log(`gs://realtimedb-b0b6f.appspot.com${userProfileUid}/${postData.postId}`);
+  if (id === UserData.name) {
+    // setUserProfileUid(postData.useruid);
+    // console.log(`${userProfileUid}/${postData.postId}`);
 
-  getDownloadURL(pathReference).then(url => {
-    
-    // // Or inserted into an <img> element
-    // const img = document.getElementById('myimg');
-    // if (img !== null) {
-    //   img.setAttribute('src', url);
-    // }
-    setImageSrcUrl(url)
-  });
+    const pathReference = ref(storage, `${postData.useruid}/${postData.postId}`);
+    getDownloadURL(pathReference).then(url => {
+      setImageSrcUrl(url);
+    });
+  }
   return (
     <div>
-      {/* {postDatas.map((postData: any) => ( */}
       <div key={postData.postId}>
         <div
           className='ProfileFeedBox'
@@ -64,7 +63,7 @@ const ProfileFeedImage = ({ postData }: Props) => {
             src={imageSrcUrl}
             alt={postData.postDescription}
           />
-          <div
+          {/* <div
             className={isHovered ? 'ProfilImageHoverInfoBox' : 'DisplayNone'}
           >
             <Box
@@ -100,19 +99,18 @@ const ProfileFeedImage = ({ postData }: Props) => {
                 <ChatBubbleIcon sx={{ color: 'black', fontSize: 35 }} />
               </div>
             </Box>
-          </div>
+          </div> */}
         </div>
-        <div className={isPostClicked ? '' : 'DisplayNone'}>
+        {/* <div className={isPostClicked ? '' : 'DisplayNone'}>
           <ProfileOpenImage
             // UserData={UserData}
             imageSrcUrl={imageSrcUrl}
             postData={postData}
             setIsPostClicked={setIsPostClicked}
           />
-        </div>
+        </div> */}
       </div>
-      {/* ))} */}
     </div>
   );
 };
-export default ProfileFeedImage;
+export default UserProfileFeedImage;

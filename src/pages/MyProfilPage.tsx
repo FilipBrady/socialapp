@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import PostContainer from '../components/PostContainer';
 import { UserList } from '../data/UsersList';
 import { useState } from 'react';
-import ProfileFeedImage from '../components/ProfileFeedImage';
+import MyProfileFeedImage from '../components/MyProfileFeedImage';
 import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
 import { useAppContainer } from '../components/Context';
@@ -11,15 +11,14 @@ import { getDownloadURL, ref } from 'firebase/storage';
 const MyProfilPage = () => {
   const { auth, userInfo, userPostData, storage } = useAppContainer();
   console.log(auth.currentUser?.email);
+  console.log(auth.currentUser?.displayName);
 
-
-  const { id } = useParams();
   return (
     <div className='ProfilePageContainer'>
       {auth.currentUser ? (
         userInfo &&
         userInfo.map(UserData => {
-          if (UserData.name === auth.currentUser?.displayName) {
+          if (UserData.email === auth.currentUser?.email) {
             return (
               <Box key={UserData.userId}>
                 <div className='ProfilePageUserInfo'>
@@ -72,13 +71,10 @@ const MyProfilPage = () => {
                 <div className='ProfileFeedContainer'>
                   {userPostData?.map(postDatas => {
                     if (postDatas.useruid === UserData.uid) {
-                      console.log(postDatas);
-                      console.log(typeof postDatas);
-
                       return (
                         <Box>
                           <Box>
-                            <ProfileFeedImage
+                            <MyProfileFeedImage
                               postData={postDatas}
                               key={postDatas.postId}
                             />

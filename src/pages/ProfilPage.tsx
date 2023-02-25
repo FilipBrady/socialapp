@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import PostContainer from '../components/PostContainer';
 import { UserList } from '../data/UsersList';
 import { useState } from 'react';
-import ProfileFeedImage from '../components/ProfileFeedImage';
+import UserProfileFeedImage from '../components/UserProfileFeedImage';
 import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
 import { useAppContainer } from '../components/Context';
@@ -10,21 +10,23 @@ import { ref } from 'firebase/storage';
 
 const ProfilPage = () => {
   const { auth, userPostData, userInfo } = useAppContainer();
-  
+
   const { id } = useParams();
+  console.log(id);
+
   return (
     <div className='ProfilePageContainer'>
       {userInfo &&
         userInfo.map(UserData => {
-          if (UserData.userName === id) {
+          if (UserData.name === id) {
             return (
               <Box key={UserData.userId}>
                 <div>
                   <div className='ProfilePageUserInfo'>
                     <Box sx={{ display: 'flex' }}>
                       <img
-                        src={UserData.userProfilePic}
-                        alt={UserData.userName}
+                        src={UserData.photoURL}
+                        alt={UserData.name}
                         className='ProfilePageUserPic'
                       />
                       <Box
@@ -45,14 +47,14 @@ const ProfilPage = () => {
                             marginX: 1,
                           }}
                         >
-                          {UserData.userName}
+                          {UserData.name}
                         </Typography>
                         <Typography variant='body1'>
                           {UserData.userBio}
                         </Typography>
                       </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                    {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                       <Box sx={{ marginX: 1 }}>
                         <Typography variant='body1'>Followers</Typography>
                         <Typography variant='body1'>
@@ -65,17 +67,18 @@ const ProfilPage = () => {
                           {UserData.userProfile.following}
                         </Typography>
                       </Box>
-                    </Box>
+                    </Box> */}
                   </div>
                   <div className='ProfileFeedContainer'>
-                    {userPostData?.map(postDatas => {
-                      if (postDatas.useruid === UserData.uid) {
+                    {userPostData?.map(postData => {
+                      if (postData.useruid === UserData.uid) {
                         return (
                           <Box>
                             <Box>
-                              <ProfileFeedImage
-                                postData={postDatas}
-                                key={postDatas.postId}
+                              <UserProfileFeedImage
+                                UserData={UserData}
+                                postData={postData}
+                                key={postData.postId}
                               />
                             </Box>
                           </Box>
