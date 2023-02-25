@@ -24,12 +24,10 @@ body {
 .PostContainer {
   width: 1080px;
   margin: auto;
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: repeat(auto, auto);
-  justify-items: center;
-  align-items: center;
-  align-content: space-between;
+  display: flex;
+  /* grid-template-columns: repeat(2, 50%);
+  grid-template-rows: repeat(auto, auto); */
+  justify-content: center;
 }
 
 .UserProfilePicPost {

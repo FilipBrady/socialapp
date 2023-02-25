@@ -46,7 +46,7 @@ const PostContainer = ({ postData }: Props) => {
                           marginX: 1,
                         }}
                       >
-                        <Link to={`${routes.profil}/${UserData.userName}`}>
+                        <Link to={`${routes.profil}/${UserData.name}`}>
                           {UserData.name}
                         </Link>
                       </Typography>
