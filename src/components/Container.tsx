@@ -48,7 +48,8 @@ export type AppState = {
     email: string,
     password: string
   ) => void;
-  addPost: (useruid: string, postDesc: string,uploadedImg: Blob) => void;
+  addPost: (useruid: string, postDesc: string, uploadedImg: Blob) => void;
+  addComment: (useruid: string, postId: string, userComment: string) => void;
 };
 
 type Props = {
@@ -89,7 +90,7 @@ const Container = ({ children }: Props) => {
       const q = query(collection(db, 'users'), where('uid', '==', user.uid));
       const existingUser = await getDocs(q);
       if (existingUser.docs.length === 0) {
-        await setDoc(doc(db, 'users', user.uid), {
+        await setDoc(doc(db, 'userPost', 'users', user.uid), {
           uid: user.uid,
           name: user.displayName,
           email: user.email,
@@ -132,7 +133,11 @@ const Container = ({ children }: Props) => {
     }
   };
 
-  const addPost = async (useruid: string, postDesc: string, uploadedImg: Blob) => {
+  const addPost = async (
+    useruid: string,
+    postDesc: string,
+    uploadedImg: Blob
+  ) => {
     const newDocRef = await addDoc(collection(db, 'userPosts'), {
       postDescription: postDesc,
       useruid: useruid,
@@ -142,11 +147,8 @@ const Container = ({ children }: Props) => {
     });
     const postId = newDocRef.id;
     await setDoc(newDocRef, { postId }, { merge: true });
-    const storageRef = ref(
-      storage,
-      `${auth.currentUser?.uid}/` + postId
-    );
-if (uploadedImg !== undefined) {
+    const storageRef = ref(storage, `${auth.currentUser?.uid}/` + postId);
+    if (uploadedImg !== undefined) {
       const uploadTask = uploadBytesResumable(storageRef, uploadedImg);
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.on(
@@ -193,6 +195,33 @@ if (uploadedImg !== undefined) {
     }
   };
 
+  const addComment = async (
+    useruid: string,
+    postId: string,
+    userComment: string
+  ) => {
+    const commentData = {
+      useruid: useruid,
+      userComment: userComment,
+      commentCreatedAt: serverTimestamp(),
+    };
+    await setDoc(doc(db, 'userPosts', postId), {
+      postComments: commentData,
+    });
+    // Add a new document in collection "cities"
+    // db.collection('userPosts')
+    //   .doc(postId)
+    //   .set({
+    //     postComments: [commentData],
+    //   })
+    //   .then(() => {
+    //     console.log('Document successfully written!');
+    //   })
+    //   .catch((error: any) => {
+    //     console.error('Error writing document: ', error);
+    //   });
+  };
+
   const appState: AppState = {
     db: db,
     auth: auth,
@@ -204,6 +233,7 @@ if (uploadedImg !== undefined) {
     logInWithEmailAndPassword: logInWithEmailAndPassword,
     registerWithEmailAndPassword: registerWithEmailAndPassword,
     addPost: addPost,
+    addComment: addComment,
   };
 
   return <Provider value={appState}>{children(appState)}</Provider>;

@@ -32,20 +32,19 @@ const MyProfileFeedImage = ({ postData }: Props) => {
   const { db, userPostData, storage, auth } = useAppContainer();
   const [isHovered, setIsHovered] = useState(false);
   const [isPostClicked, setIsPostClicked] = useState(false);
-  const [imageSrcUrl, setImageSrcUrl] = useState("")
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
   const pathReference = ref(
     storage,
     `${auth.currentUser?.uid}/${postData.postId}`
   );
 
   getDownloadURL(pathReference).then(url => {
-    
     // // Or inserted into an <img> element
     // const img = document.getElementById('myimg');
     // if (img !== null) {
     //   img.setAttribute('src', url);
     // }
-    setImageSrcUrl(url)
+    setImageSrcUrl(url);
   });
   return (
     <div>
@@ -57,13 +56,15 @@ const MyProfileFeedImage = ({ postData }: Props) => {
           onMouseLeave={() => setIsHovered(false)}
           onClick={() => setIsPostClicked(true)}
         >
-          <img
-            key={postData.postId}
-            className='ProfileFeedImage'
-            id='myimg'
-            src={imageSrcUrl}
-            alt={postData.postDescription}
-          />
+          <div className='ProfileFeedImageBox'>
+            <img
+              key={postData.postId}
+              id='myimg'
+              src={imageSrcUrl}
+              className='ProfileFeedImage'
+              alt={postData.postDescription}
+            />
+          </div>
           <div
             className={isHovered ? 'ProfilImageHoverInfoBox' : 'DisplayNone'}
           >

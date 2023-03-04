@@ -124,15 +124,24 @@ body {
   height: 300px;
 }
 
-.ProfileFeedImage {
-  /* max-width: 300px;
-  max-height: 300px;
-  width: 300px; */
+.ProfileFeedImageBox {
   /* width: fit-content; */
-  width: inherit;
+  width: 300px;
   margin: 2px 3px;
   cursor: pointer;
-  aspect-ratio: 1/1;
+  /* aspect-ratio: 1/1; */
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 300px;
+}
+
+.ProfileFeedImage {
+  max-width: 300px;
+  max-height: 300px;
+  width: 300px;
+  width: fit-content;
 }
 
 .ProfilImageHoverInfoBox {
@@ -166,12 +175,33 @@ body {
   z-index: 1000;
 }
 
-.ProfileOpenImageContainer {
+.ProfileOpenImageImg {
+  max-width: 400px;
+  /* grid-column: 1 / 5; */
+  /* grid-row-start: 3; */
+  justify-self: center;
+  height: fit-content;
+}
+
+.ProfileOpenImageRight {}
+
+.ProfileOpenImageLeft {
   display: grid;
-  grid-template-columns: repeat(8, 12.5%);
-  grid-template-rows: repeat(8, 12.5%);
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, 25%);
+  width: 100%;
+  height: 100%;
+}
+
+.ProfileOpenImageContainer {
+  display: flex;
+  /* grid-template-columns: repeat(8, 12.5%); */
+  /* grid-template-rows: repeat(8, 12.5%); */
   height: 100%;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
 }
 
 .ProfileOpenImageBox {
@@ -195,30 +225,35 @@ body {
 }
 
 .ProfilImageDescTimeBox {
-  grid-column-start: 5;
-  grid-column-end: 8;
-  align-items: start;
-  grid-row-start: 6;
-  justify-self: left;
-  align-self: end;
+  /* grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 3; */
+  /* align-items: start;
+  justify-self: start;
+  align-self: start; */
+  text-align: left;
+}
+
+.ProfileOpenImageInteractionSection {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 4;
 }
 
 .interactionPostBtnProfileBox {
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  grid-column-start: 5;
-  grid-column-end: 8;
-  grid-row-start: 7;
-  align-self: flex-end;
+  justify-content: start;
+  align-items: start;
 }
 
 
 .ProfilImageCommentSection {
-  grid-column-start: 5;
+  grid-column-start: 1;
   grid-row-start: 1;
-  grid-column-end: 8;
+  grid-row-end: 2;
+  grid-column-end: 4;
   display: inherit;
   text-align: left;
 }
