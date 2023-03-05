@@ -13,7 +13,14 @@ type Props = {
 };
 
 const PostContainer = ({ postData }: Props) => {
-  const { auth, userInfo, storage } = useAppContainer();
+  const { auth, userPostData, userInfo, storage } = useAppContainer();
+
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
+  const pathReference = ref(storage, `userProfilePictures/${postData.useruid}`);
+
+  getDownloadURL(pathReference).then(url => {
+    setImageSrcUrl(url);
+  });
   return (
     <Box className='PostContainer'>
       {userInfo &&
@@ -33,7 +40,7 @@ const PostContainer = ({ postData }: Props) => {
                       }}
                     >
                       <img
-                        src={UserData.photoURL}
+                        src={imageSrcUrl}
                         alt={UserData.name}
                         className='UserProfilePicPost'
                       />

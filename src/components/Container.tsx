@@ -41,6 +41,7 @@ export type AppState = {
   storage: FirebaseStorage;
   userInfo: DocumentData[] | undefined;
   userPostData: DocumentData[] | undefined;
+  userComment: DocumentData[] | undefined;
   signInWithGoogle: () => void;
   logInWithEmailAndPassword: (email: string, password: string) => void;
   registerWithEmailAndPassword: (
@@ -50,6 +51,8 @@ export type AppState = {
   ) => void;
   addPost: (useruid: string, postDesc: string, uploadedImg: Blob) => void;
   addComment: (useruid: string, postId: string, userComment: string) => void;
+  addProfilePicture: (uploadedImg: Blob) => void;
+  addProfileBio: (newUserBio: string, useruid: string) => void;
 };
 
 type Props = {
@@ -82,6 +85,12 @@ const Container = ({ children }: Props) => {
   );
   const [userPostData] = useCollectionData(userPost);
 
+  const userComments = query(
+    collection(db, 'userComments'),
+    orderBy('createdAt', 'asc')
+  );
+  const [userComment] = useCollectionData(userComments);
+
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -90,7 +99,7 @@ const Container = ({ children }: Props) => {
       const q = query(collection(db, 'users'), where('uid', '==', user.uid));
       const existingUser = await getDocs(q);
       if (existingUser.docs.length === 0) {
-        await setDoc(doc(db, 'userPost', 'users', user.uid), {
+        await setDoc(doc(db, 'users', user.uid), {
           uid: user.uid,
           name: user.displayName,
           email: user.email,
@@ -119,6 +128,7 @@ const Container = ({ children }: Props) => {
         uid: user.uid,
         name: name,
         email: email,
+        photoURL: null,
       });
     } catch (err) {
       console.log(err);
@@ -200,26 +210,71 @@ const Container = ({ children }: Props) => {
     postId: string,
     userComment: string
   ) => {
-    const commentData = {
+    await addDoc(collection(db, 'userComments'), {
       useruid: useruid,
-      userComment: userComment,
-      commentCreatedAt: serverTimestamp(),
-    };
-    await setDoc(doc(db, 'userPosts', postId), {
-      postComments: commentData,
+      createdAt: serverTimestamp(),
+      userCommentText: userComment,
+      postId: postId,
     });
-    // Add a new document in collection "cities"
-    // db.collection('userPosts')
-    //   .doc(postId)
-    //   .set({
-    //     postComments: [commentData],
-    //   })
-    //   .then(() => {
-    //     console.log('Document successfully written!');
-    //   })
-    //   .catch((error: any) => {
-    //     console.error('Error writing document: ', error);
-    //   });
+  };
+
+  const addProfilePicture = async (uploadedImg: Blob) => {
+    const storageRef = ref(
+      storage,
+      `userProfilePictures/` + auth.currentUser?.uid
+    );
+    if (uploadedImg !== undefined) {
+      const uploadTask = uploadBytesResumable(storageRef, uploadedImg);
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on(
+        'state_changed',
+        snapshot => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        },
+        error => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+
+            // ...
+
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          // Upload completed successfully, now we can get the download URL
+          getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+            console.log('File available at', downloadURL);
+          });
+        }
+      );
+    }
+  };
+  const addProfileBio = async (newUserBio: string, useruid: string) => {
+    const newData = {
+      userBio: newUserBio,
+      photoURL: auth.currentUser?.uid,
+    };
+    await setDoc(doc(db, 'users', useruid), newData, { merge: true });
   };
 
   const appState: AppState = {
@@ -229,11 +284,14 @@ const Container = ({ children }: Props) => {
     storage: storage,
     userInfo: userInfo,
     userPostData: userPostData,
+    userComment: userComment,
     signInWithGoogle: signInWithGoogle,
     logInWithEmailAndPassword: logInWithEmailAndPassword,
     registerWithEmailAndPassword: registerWithEmailAndPassword,
     addPost: addPost,
     addComment: addComment,
+    addProfilePicture: addProfilePicture,
+    addProfileBio: addProfileBio,
   };
 
   return <Provider value={appState}>{children(appState)}</Provider>;

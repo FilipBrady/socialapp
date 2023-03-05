@@ -7,12 +7,25 @@ import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
 import { useAppContainer } from '../components/Context';
 import { getDownloadURL, ref } from 'firebase/storage';
+import AddUserInfo from '../components/AddUserInfo';
 
 const MyProfilPage = () => {
   const { auth, userInfo, userPostData, storage } = useAppContainer();
-  console.log(auth.currentUser?.email);
-  console.log(auth.currentUser?.displayName);
+  const [isManagingProfile, setIsManagingProfile] = useState(false);
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
+  const pathReference = ref(
+    storage,
+    `userProfilePictures/${auth.currentUser?.uid}`
+  );
 
+  getDownloadURL(pathReference).then(url => {
+    // // Or inserted into an <img> element
+    // const img = document.getElementById('myimg');
+    // if (img !== null) {
+    //   img.setAttribute('src', url);
+    // }
+    setImageSrcUrl(url);
+  });
   return (
     <div className='ProfilePageContainer'>
       {auth.currentUser ? (
@@ -24,7 +37,7 @@ const MyProfilPage = () => {
                 <div className='ProfilePageUserInfo'>
                   <Box sx={{ display: 'flex' }}>
                     <img
-                      src={UserData.photoURL}
+                      src={imageSrcUrl}
                       alt={UserData.name}
                       className='ProfilePageUserPic'
                     />
@@ -53,7 +66,18 @@ const MyProfilPage = () => {
                       </Typography>
                     </Box>
                   </Box>
-                  <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <Box>
+                    <button
+                      style={{
+                        border: '.5px solid #cecece',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => setIsManagingProfile(true)}
+                    >
+                      Manage My Profile
+                    </button>
+                  </Box>
+                  {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Box sx={{ marginX: 1 }}>
                       <Typography variant='body1'>Followers</Typography>
                       <Typography variant='body1'>
@@ -66,7 +90,7 @@ const MyProfilPage = () => {
                         {UserData.following}
                       </Typography>
                     </Box>
-                  </Box>
+                  </Box> */}
                 </div>
                 <div className='ProfileFeedContainer'>
                   {userPostData?.map(postDatas => {
@@ -83,6 +107,9 @@ const MyProfilPage = () => {
                       );
                     }
                   })}
+                </div>
+                <div className={isManagingProfile ? "ManagingProfile" : "DisplayNone"} >
+                  <AddUserInfo setIsManagingProfile={setIsManagingProfile} />
                 </div>
               </Box>
             );

@@ -29,7 +29,7 @@ type Props = {
 };
 
 const MyProfileFeedImage = ({ postData }: Props) => {
-  const { db, userPostData, storage, auth } = useAppContainer();
+  const { db, userPostData, storage, auth, userComment } = useAppContainer();
   const [isHovered, setIsHovered] = useState(false);
   const [isPostClicked, setIsPostClicked] = useState(false);
   const [imageSrcUrl, setImageSrcUrl] = useState('');
@@ -37,6 +37,7 @@ const MyProfileFeedImage = ({ postData }: Props) => {
     storage,
     `${auth.currentUser?.uid}/${postData.postId}`
   );
+
 
   getDownloadURL(pathReference).then(url => {
     // // Or inserted into an <img> element
@@ -68,7 +69,7 @@ const MyProfileFeedImage = ({ postData }: Props) => {
           <div
             className={isHovered ? 'ProfilImageHoverInfoBox' : 'DisplayNone'}
           >
-            <Box
+            {/* <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -95,12 +96,12 @@ const MyProfileFeedImage = ({ postData }: Props) => {
               }}
             >
               <Typography variant='h6' sx={{ lineHeight: 0.8 }}>
-                {postData.postComments}
+              None
               </Typography>
               <div className='ProfilImageHoverInfoIcon'>
                 <ChatBubbleIcon sx={{ color: 'black', fontSize: 35 }} />
               </div>
-            </Box>
+            </Box> */}
           </div>
         </div>
         <div className={isPostClicked ? '' : 'DisplayNone'}>
