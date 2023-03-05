@@ -9,6 +9,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { useEffect, useState } from 'react';
 import { DocumentData, Timestamp } from 'firebase/firestore';
 import { useAppContainer } from './Context';
+import UserComment from './UserComment';
 
 type Props = {
   setIsPostClicked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,23 +38,22 @@ const ProfileOpenImage = ({
   postData,
   imageSrcUrl,
 }: Props) => {
-  const { auth, addComment } = useAppContainer();
+  const { auth, addComment, userComment, userInfo } = useAppContainer();
   const [isLiked, setIsLiked] = useState(false);
   const [isLikedAnimation, setIsLikedAnimation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [userComment, setUserComment] = useState('');
+  const [userCommentText, setUserCommentText] = useState('');
 
   const handleCommentSubmit = (submitting: any) => {
-    // submitting.preventDefault();
-    // if (userComment.length !== 0) {
-    //   if (auth.currentUser !== null) {
-    //     addComment(auth.currentUser.uid, postData.postId, userComment);
-    //     setUserComment('');
-    //   } else alert('you need to be logged in');
-    // }
+    submitting.preventDefault();
+    if (userCommentText.length !== 0) {
+      if (auth.currentUser !== null) {
+        addComment(auth.currentUser.uid, postData.postId, userCommentText);
+        setUserCommentText('');
+      } else alert('you need to be logged in');
+    }
   };
-  // console.log(postData.postComments[0].userComment);
-  
+
   useEffect(() => {
     const changeHeatrVisibility = setInterval(() => {
       setIsLikedAnimation(false);
@@ -105,8 +105,12 @@ const ProfileOpenImage = ({
             X
           </div>
           <div className='ProfilImageCommentSection'>
-            {/* {postData.postComments} */}
-            none
+            {userComment &&
+              userComment.map(comment => {
+                if (comment.postId === postData.postId) {
+                  return <UserComment comment={comment} />;
+                }
+              })}
           </div>
           <div className='ProfileOpenImageInteractionSection'>
             <div className='ProfilImageDescTimeBox'>
@@ -155,8 +159,8 @@ const ProfileOpenImage = ({
             >
               <input
                 type='text'
-                value={userComment}
-                onChange={text => setUserComment(text.target.value)}
+                value={userCommentText}
+                onChange={text => setUserCommentText(text.target.value)}
               />
               <input type='submit' value='Add Comment' />
             </form>

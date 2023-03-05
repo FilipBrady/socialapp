@@ -63,10 +63,10 @@ const UserProfileFeedImage = ({ postData, UserData }: Props) => {
             src={imageSrcUrl}
             alt={postData.postDescription}
           />
-          {/* <div
+          <div
             className={isHovered ? 'ProfilImageHoverInfoBox' : 'DisplayNone'}
           >
-            <Box
+            {/* <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -98,17 +98,17 @@ const UserProfileFeedImage = ({ postData, UserData }: Props) => {
               <div className='ProfilImageHoverInfoIcon'>
                 <ChatBubbleIcon sx={{ color: 'black', fontSize: 35 }} />
               </div>
-            </Box>
-          </div> */}
+            </Box> */}
+          </div>
         </div>
-        {/* <div className={isPostClicked ? '' : 'DisplayNone'}>
+        <div className={isPostClicked ? '' : 'DisplayNone'}>
           <ProfileOpenImage
             // UserData={UserData}
             imageSrcUrl={imageSrcUrl}
             postData={postData}
             setIsPostClicked={setIsPostClicked}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );

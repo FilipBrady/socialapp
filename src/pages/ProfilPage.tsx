@@ -6,13 +6,18 @@ import UserProfileFeedImage from '../components/UserProfileFeedImage';
 import ProfileOpenImage from '../components/ProfileOpenImage';
 import { useParams } from 'react-router-dom';
 import { useAppContainer } from '../components/Context';
-import { ref } from 'firebase/storage';
+import { getDownloadURL, ref } from 'firebase/storage';
+import ProfilePageInfoTop from '../components/ProfilePageInfoTop';
 
 const ProfilPage = () => {
-  const { auth, userPostData, userInfo } = useAppContainer();
-
+  const { auth, userPostData, userInfo, storage } = useAppContainer();
   const { id } = useParams();
-  console.log(id);
+  const [imageSrcUrl, setImageSrcUrl] = useState('');
+  const pathReference = ref(storage, `userProfilePictures/${userInfo?.map}`);
+
+  getDownloadURL(pathReference).then(url => {
+    setImageSrcUrl(url);
+  });
 
   return (
     <div className='ProfilePageContainer'>
@@ -23,9 +28,10 @@ const ProfilPage = () => {
               <Box key={UserData.userId}>
                 <div>
                   <div className='ProfilePageUserInfo'>
-                    <Box sx={{ display: 'flex' }}>
+                    <ProfilePageInfoTop UserData={UserData} />
+                    {/* <Box sx={{ display: 'flex' }}>
                       <img
-                        src={UserData.photoURL}
+                        src={imageSrcUrl}
                         alt={UserData.name}
                         className='ProfilePageUserPic'
                       />
@@ -53,7 +59,7 @@ const ProfilPage = () => {
                           {UserData.userBio}
                         </Typography>
                       </Box>
-                    </Box>
+                    </Box> */}
                     {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                       <Box sx={{ marginX: 1 }}>
                         <Typography variant='body1'>Followers</Typography>

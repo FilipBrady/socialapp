@@ -11,6 +11,7 @@ import { DocumentData } from 'firebase/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { userInfo } from 'os';
 import { useAppContainer } from './Context';
+import ProfileOpenImage from './ProfileOpenImage';
 
 type Props = {
   UserData: DocumentData;
@@ -25,6 +26,7 @@ const PostCard = ({  UserData, postData }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isLikedAnimation, setIsLikedAnimation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isPostClicked, setIsPostClicked] = useState(false);
   const imageURL = 'https://picsum.photos/300/400';
   const [imageSrcUrl, setImageSrcUrl] = useState('');
 
@@ -63,8 +65,7 @@ const PostCard = ({  UserData, postData }: Props) => {
           alt={UserData.postDescription}
           style={{ width: '450px' }}
         />
-        <Typography variant='body1'>{UserData.postDescription}</Typography>
-        <Typography variant='body2'>{UserData.postDate}</Typography>
+        <Typography variant='body1'>{postData.postDescription}</Typography>
       </Box>
       <Box
         sx={{
@@ -84,7 +85,7 @@ const PostCard = ({  UserData, postData }: Props) => {
           >
             {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </div>
-          <div className='interactionPostBtn'>
+          <div className='interactionPostBtn' onClick={() => setIsPostClicked(true)}>
             <ChatBubbleOutlineIcon />
           </div>
           <div className='interactionPostBtn'>
@@ -100,6 +101,14 @@ const PostCard = ({  UserData, postData }: Props) => {
           </div>
         </Box>
       </Box>
+      <div className={isPostClicked ? '' : 'DisplayNone'}>
+          <ProfileOpenImage
+            // UserData={UserData}
+            imageSrcUrl={imageSrcUrl}
+            postData={postData}
+            setIsPostClicked={setIsPostClicked}
+          />
+        </div>
     </div>
   );
 };
