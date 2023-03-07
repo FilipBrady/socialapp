@@ -101,7 +101,7 @@ const PostCard = ({  UserData, postData }: Props) => {
           </div>
         </Box>
       </Box>
-      <div className={isPostClicked ? '' : 'DisplayNone'}>
+      <div className={isPostClicked ? 'isPostClicked' : 'DisplayNone'}>
           <ProfileOpenImage
             // UserData={UserData}
             imageSrcUrl={imageSrcUrl}
