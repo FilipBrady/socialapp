@@ -6,7 +6,7 @@ body {
 .App {
   text-align: center;
   margin: 0 auto;
-  width: fit-content;
+  width: auto;
   overflow-y: hidden;
 }
 
@@ -127,6 +127,8 @@ body {
   position: relative;
   width: 300px;
   height: 300px;
+  display: flex;
+  align-items: center;
 }
 
 .ProfileFeedImageBox {
@@ -187,8 +189,11 @@ body {
   width: fit-content;
   max-height: 500px;
   height: 400px;
-  border: 5px solid black;
+  /* border: 1px solid black; */
   z-index: 1000;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 12px 13px 37px -1px rgba(0,0,0,0.77);
 }
 
 .ProfileOpenImageImg {
@@ -221,7 +226,7 @@ body {
   gap: 2rem;
 }
 .isPostClicked {
-  background-color: rgba(255, 255, 255, 0.796);
+  background-color: rgba(255, 255, 255, 0.933);
   min-width: 100vw;
   width: max-content;
   min-height: 100vh;
@@ -333,10 +338,12 @@ body {
   align-self: flex-end;
 }
 
-.ProfileImageAddComment>input[type=text] {
+.ProfileImageAddComment>input[type=text],
+.ProfileImageAddComment>textarea {
   border: 1px solid black;
   font-size: 18px;
   padding: 3px 5px;
+  color: black;
 }
 
 .ProfilOpenImageCloseIcon {

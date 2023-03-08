@@ -11,15 +11,24 @@ const SignUpPage = () => {
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
   const [repeteUserPassword, setRepeteUserPassword] = useState('');
+  const [uploadedImg, setUploadedImg] = useState<Blob>();
+  const [newUserBio, setNewUserBio] = useState('');
+  const handleFileUpload = (e: any) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setUploadedImg(file);
+      console.log(URL.createObjectURL(file));
+    }
+  };
 
   const handlesignInFormSubmit = (submitting: any) => {
     submitting.preventDefault();
     if (
       newUserPassword === repeteUserPassword &&
       newUserName !== '' &&
-      newUserEmail !== ''
+      newUserEmail !== '' && uploadedImg !== undefined
     ) {
-      registerWithEmailAndPassword(newUserName, newUserEmail, newUserPassword);
+      registerWithEmailAndPassword(newUserName, newUserEmail, newUserPassword, newUserBio, uploadedImg);
       setNewUserEmail('');
       setNewUserName('');
       setNewUserPassword('');
@@ -66,6 +75,15 @@ const SignUpPage = () => {
             placeholder='Email'
             value={newUserEmail}
             onChange={e => setNewUserEmail(e.target.value)}
+          />
+          <input type='file' style={{border: "none", color: "black"}} onChange={handleFileUpload} />
+          <textarea
+            cols={30}
+            rows={5}
+            placeholder='description'
+            value={newUserBio}
+            style={{borderRadius: "15px", padding: "8px"}}
+            onChange={text => setNewUserBio(text.target.value)}
           />
           <input type='submit' />
         </form>
