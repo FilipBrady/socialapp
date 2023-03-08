@@ -14,12 +14,13 @@ import { useAppContainer } from '../components/Context';
 
 const ExploreSite = () => {
   const { auth, userInfo, userPostData, storage } = useAppContainer();
-  
+  const shuffle = (arr: any) => [...arr].sort(() => 0.5 - Math.random());
   return (
     <div>
-      {userPostData && userPostData.map(postData => (
-        <PostContainer postData={postData} />
-      ))}
+      {userPostData &&
+        shuffle(userPostData).map(postData => (
+          <PostContainer postData={postData} />
+        ))}
     </div>
   );
 };

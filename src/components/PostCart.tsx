@@ -17,10 +17,9 @@ type Props = {
   UserData: DocumentData;
   // imageSrcUrl: string;
   postData: DocumentData;
-
 };
 
-const PostCard = ({  UserData, postData }: Props) => {
+const PostCard = ({ UserData, postData }: Props) => {
   const { auth, userInfo, storage } = useAppContainer();
 
   const [isLiked, setIsLiked] = useState(false);
@@ -54,6 +53,7 @@ const PostCard = ({  UserData, postData }: Props) => {
       onDoubleClick={() => {
         setIsLiked(true);
         setIsLikedAnimation(true);
+        // handlePostLike();
       }}
     >
       <div className={isLikedAnimation ? 'heartBox' : 'heartBoxHidden'}>
@@ -80,12 +80,16 @@ const PostCard = ({  UserData, postData }: Props) => {
             className='interactionPostBtn'
             onClick={() => {
               setIsLiked(!isLiked);
+              // handlePostLike();
               isLiked ? setIsLikedAnimation(false) : setIsLikedAnimation(true);
             }}
           >
             {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </div>
-          <div className='interactionPostBtn' onClick={() => setIsPostClicked(true)}>
+          <div
+            className='interactionPostBtn'
+            onClick={() => setIsPostClicked(true)}
+          >
             <ChatBubbleOutlineIcon />
           </div>
           <div className='interactionPostBtn'>
@@ -102,13 +106,13 @@ const PostCard = ({  UserData, postData }: Props) => {
         </Box>
       </Box>
       <div className={isPostClicked ? 'isPostClicked' : 'DisplayNone'}>
-          <ProfileOpenImage
-            // UserData={UserData}
-            imageSrcUrl={imageSrcUrl}
-            postData={postData}
-            setIsPostClicked={setIsPostClicked}
-          />
-        </div>
+        <ProfileOpenImage
+          // UserData={UserData}
+          imageSrcUrl={imageSrcUrl}
+          postData={postData}
+          setIsPostClicked={setIsPostClicked}
+        />
+      </div>
     </div>
   );
 };

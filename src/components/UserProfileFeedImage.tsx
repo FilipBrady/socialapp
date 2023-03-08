@@ -49,7 +49,7 @@ const UserProfileFeedImage = ({ postData, UserData }: Props) => {
   }
   return (
     <div>
-      <div key={postData.postId}>
+      <div key={postData.postId} >
         <div
           className='ProfileFeedBox'
           onMouseEnter={() => setIsHovered(true)}
@@ -101,7 +101,7 @@ const UserProfileFeedImage = ({ postData, UserData }: Props) => {
             </Box> */}
           </div>
         </div>
-        <div className={isPostClicked ? '' : 'DisplayNone'}>
+        <div className={isPostClicked ? 'isPostClicked' : 'DisplayNone'} onClick={() => setIsPostClicked(false)}>
           <ProfileOpenImage
             // UserData={UserData}
             imageSrcUrl={imageSrcUrl}

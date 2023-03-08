@@ -9,10 +9,12 @@ import {
   Firestore,
   getDocs,
   getFirestore,
+  increment,
   orderBy,
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import {
@@ -47,12 +49,16 @@ export type AppState = {
   registerWithEmailAndPassword: (
     name: string,
     email: string,
-    password: string
+    password: string,
+    userBio: string,
+    uploadedImg: Blob
   ) => void;
   addPost: (useruid: string, postDesc: string, uploadedImg: Blob) => void;
   addComment: (useruid: string, postId: string, userComment: string) => void;
   addProfilePicture: (uploadedImg: Blob) => void;
   addProfileBio: (newUserBio: string, useruid: string) => void;
+
+  // addLikeToPost: (postId: string) => void;
 };
 
 type Props = {
@@ -114,7 +120,9 @@ const Container = ({ children }: Props) => {
   const registerWithEmailAndPassword = async (
     name: string,
     email: string,
-    password: string
+    password: string,
+    userBio: string,
+    uploadedImg: Blob
   ) => {
     try {
       const createUser = await createUserWithEmailAndPassword(
@@ -129,7 +137,54 @@ const Container = ({ children }: Props) => {
         name: name,
         email: email,
         photoURL: null,
+        userBio: userBio,
       });
+      const storageRef = ref(storage, `userProfilePictures/` + user.uid);
+      if (uploadedImg !== undefined) {
+        const uploadTask = uploadBytesResumable(storageRef, uploadedImg);
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(
+          'state_changed',
+          snapshot => {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+            }
+          },
+          error => {
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            switch (error.code) {
+              case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                break;
+              case 'storage/canceled':
+                // User canceled the upload
+                break;
+
+              // ...
+
+              case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse
+                break;
+            }
+          },
+          () => {
+            // Upload completed successfully, now we can get the download URL
+            getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+              console.log('File available at', downloadURL);
+            });
+          }
+        );
+      }
     } catch (err) {
       console.log(err);
     }
@@ -269,6 +324,25 @@ const Container = ({ children }: Props) => {
       );
     }
   };
+
+  // const addLikeToPost =  (postId: string) => {
+  //   const docRef = doc(db, 'userPosts', postId);
+  //   console.log(docRef);
+
+  //    setDoc(docRef, {
+  //     postLikes: increment(1),
+  //   }, {merge: true});
+  //   // userPostData?.map(async post => {
+  //   //   if (post.postId === postId) {
+  //   //   }
+  //   // }
+  //   // );
+  //   // const newData = {
+  //   //   postLikes: increment(1)
+  //   // }
+  //   // await setDoc(doc(db, 'userPosts', postId), newData, { merge: true })
+  // };
+
   const addProfileBio = async (newUserBio: string, useruid: string) => {
     const newData = {
       userBio: newUserBio,
@@ -292,6 +366,8 @@ const Container = ({ children }: Props) => {
     addComment: addComment,
     addProfilePicture: addProfilePicture,
     addProfileBio: addProfileBio,
+
+    // // addLikeToPost: addLikeToPost,
   };
 
   return <Provider value={appState}>{children(appState)}</Provider>;
